@@ -1,0 +1,65 @@
+[
+     {
+          "id": 1,
+          "title": "Lapiz negro",
+          "description": "Elemento para escribir o dibujar",
+          "code": "A310",
+          "price": 1500,
+          "status": true,
+          "stock": "300",
+          "category": "Librería",
+          "thumbnail": [
+               "./img"
+          ]
+     },
+     {
+          "id": 3,
+          "title": "Cuaderno",
+          "description": "Libro pequeño",
+          "code": "B150",
+          "price": 5000,
+          "status": true,
+          "stock": "20",
+          "category": "Librería",
+          "thumbnail": [
+               "./img"
+          ]
+     },
+     {
+          "id": 2,
+          "title": "Marcador",
+          "description": "Instrumento de escritura que contiene su propia tinta",
+          "code": "A320",
+          "price": 2000,
+          "status": true,
+          "stock": "300",
+          "category": "Librería",
+          "thumbnail": [
+               "./img"
+          ]
+     },
+     {
+          "id": 4,
+          "title": "Plasticola",
+          "description": "Pegamento",
+          "code": "C400",
+          "price": 2000,
+          "status": true,
+          "stock": "300",
+          "category": "Librería",
+          "thumbnail": [
+               "./img"
+          ]
+     },
+     {
+          "id": 5,
+          "title": "Sacapuntas",
+          "description": "Afila lápices",
+          "code": "A330",
+          "price": 1500,
+          "status": true,
+          "thumbnail": [
+               "./img"
+          ]
+     }
+]

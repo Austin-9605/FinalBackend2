@@ -1,0 +1,37 @@
+<script src="/socket.io/socket.io.js"></script>
+
+<h2>WebSockets: Productos en Tiempo Real </h2>
+<hr>
+<ul id="productosTiempoReal"></ul>
+
+<script>
+    const socket = io()
+
+    const ulProductos = document.getElementById("productosTiempoReal")
+
+    socket.on("nuevoProducto", producto => {
+
+        let liProducto = document.createElement("li")
+        liProducto.textContent = producto.title
+        ulProductos.append(liProducto)
+    })
+
+  socket.on("productoEliminado", producto => {
+    ulProductos.innerHTML = ""
+    cargaDatos()
+  })
+
+    const cargaDatos = async () => {
+        let respuesta = await fetch("/api/products", {})
+        let datos = await respuesta.json()
+        datos.productos.forEach(p => {
+            let liProducto = document.createElement("li")
+            liProducto.textContent = p.title
+            liProducto.setAttribute("data-id", p.id)
+            ulProductos.append(liProducto)
+        })
+
+    }
+
+    cargaDatos()
+</script>

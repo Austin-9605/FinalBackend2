@@ -1,0 +1,83 @@
+<h2>Lista de Productos</h2>
+<hr>
+
+<form id="cartForm">
+    <label for="cartSelect">Selecciona un carrito:</label>
+    <select name="cartId" id="cartSelect" required>
+        {{#each carritos}}
+        <option value="{{_id}}">Carrito {{_id}}</option>
+        {{/each}}
+    </select>
+</form>
+
+<hr>
+<br>
+<ul>
+    {{#each products}}
+    <li>
+        <span class="product-title">{{title}}</span> ${{price}}
+
+        <button type="button" onclick="agregarAlCarrito('{{_id}}')">Agregar al Carrito</button>
+    </li>
+    {{/each}}
+</ul>
+
+<br>
+{{#if hasPrevPage}}
+<a href="/products?page=1">Pág.1</a>
+{{else}}
+<a href="/products?page=1" class="disabled">Pág.1</a>
+{{/if}}
+
+{{#if hasPrevPage}}
+<a href="/products?page={{prevPage}}">Pág.Prev.</a>
+{{else}}
+<a href="/products?page={{prevPage}}" class="disabled">Pág.Prev.</a>
+{{/if}}
+
+{{#if hasNextPage}}
+<a href="/products?page={{nextPage}}">Pág.Sig.</a>
+{{else}}
+<a href="/products?page={{nextPage}}" class="disabled">Pág.Sig.</a>
+{{/if}}
+
+{{#if hasNextPage}}
+<a href="/products?page={{totalPages}}">Ult.Pág.</a>
+{{else}}
+<a href="/products?page={{totalPages}}" class="disabled">Ult.Pág.</a>
+{{/if}}
+
+<script>
+    async function agregarAlCarrito(pid) {
+        const cartSelect = document.getElementById('cartSelect');
+        const cartId = cartSelect.value;
+
+        if (!cartId) {
+            alert('Por favor selecciona un carrito.');
+            return;
+        }
+
+        try {
+            const response = await fetch(`/api/carts/${cartId}/products/${pid}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    pid: pid,
+                }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                alert('Producto agregado al carrito exitosamente');
+            } else {
+                alert('Error: ' + data.error);
+            }
+        } catch (error) {
+            console.error('Error al agregar el producto al carrito:', error);
+            alert('Hubo un error al agregar el producto al carrito');
+        }
+    }
+</script>

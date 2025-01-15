@@ -1,0 +1,14 @@
+<h2>Carrito con ID: <span class="cid-color">{{cid}}</span></h2>
+<hr>
+
+{{#if carrito.length}}
+  <ul>
+    {{#each carrito}}
+      <li>
+        Producto: {{productTitle}} | Cantidad: {{quantity}}
+      </li>
+    {{/each}}
+  </ul>
+{{else}}
+  <p>Este carrito está vacío.</p>
+{{/if}}
