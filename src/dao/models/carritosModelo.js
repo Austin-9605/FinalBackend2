@@ -15,7 +15,7 @@ const cartSchema = new mongoose.Schema(
                     }
                 }
             ],
-            default: [] 
+            default: []
         }
     },
     {
@@ -24,7 +24,4 @@ const cartSchema = new mongoose.Schema(
 )
 
 
-export const carritoModelo = mongoose.model(
-    "carts",
-    cartSchema
-)
+export const carritoModelo = mongoose.model("carts", cartSchema)

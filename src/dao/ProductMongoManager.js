@@ -1,18 +1,19 @@
 import { productoModelo } from "./models/productosModelo.js";
+import { paginate } from "mongoose-paginate-v2";
 console.log("Cargando clase ProductMongoManager")
 
 export class ProductMongoManager {
 
     //get
-    static async getProductsPag(page = 1, limit = 10, sort = {}, filter = {}) {
+    async getProductsPag(page = 1, limit = 50, sort = {}, filter = {}) {
         try {
-            
+
             page = Math.max(1, parseInt(page));
             limit = Math.max(1, parseInt(limit));
 
             return await productoModelo.paginate(
                 filter,
-                { page, limit, lean: true, sort}
+                { page, limit, lean: true, sort }
             );
         } catch (error) {
             console.error("Error al obtener productos paginados:", error);
@@ -20,33 +21,30 @@ export class ProductMongoManager {
         }
     }
 
-////
-static async getCategories(){
-    try {
-        const categories = await productoModelo.distinct("category");
-        return categories
-    } catch (error) {
-        console.error("Error al obtener categorías:", error); 
-        throw error
+    ////
+    async getCategories() {
+        try {
+            const categories = await productoModelo.distinct("category");
+            return categories
+        } catch (error) {
+            console.error("Error al obtener categorías:", error);
+            throw error
+        }
     }
-}
-////
+    ////
 
-    static async getProducts() {
+    // get tradicional
+    async getProducts() {
         return await productoModelo.find().lean()
-
-
     }
 
-    // get por id (prueba)
-    static async getProductsBy(filtro = {}) {
+    // get by
+    async getProductsBy(filtro = {}) {
         return await productoModelo.findOne(filtro)
     }
-    //
-
 
     //post
-    static async addProduct(producto = {}) {
+    async addProduct(producto = {}) {
         let nuevoProducto = await productoModelo.create(producto)
         return nuevoProducto.toJSON()
 
@@ -54,17 +52,17 @@ static async getCategories(){
     }
 
     //update
-    static async modifyProduct(id, aModificar = {}) {
+    async modifyProduct(id, aModificar = {}) {
         return await productoModelo.findByIdAndUpdate(id, aModificar, { new: true })
     }
 
     //delete
-    static async deleteProduct(id) {
+    async deleteProduct(id) {
         return await productoModelo.findByIdAndDelete(id)
     }
 
-
 }
 
+export const productDao = new ProductMongoManager();
 
 

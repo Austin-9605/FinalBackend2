@@ -1,8 +1,11 @@
-export const config = {
-    PORT: 8080,
-    PRODUCTOS_PATH: "./src/data/products.json",
-    CARRITOS_PATH: "./src/data/carts.json",
-    MONGO_URL: "mongodb+srv://agusbegue96:CoderCoder@cluster0.mnv0x.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
-    DB_NAME: "ecommerce"
-}
+import { config } from "dotenv"
 
+config();
+
+export const CONFIG = {
+    PORT: process.env.PORT || 8080,
+    MONGO_URI: process.env.MONGO_URI,
+    DB_NAME: process.env.DB_NAME,
+    JWT_SECRET: process.env.JWT_SECRET,
+    JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN || "1d"
+}

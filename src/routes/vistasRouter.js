@@ -1,9 +1,10 @@
 import { Router } from 'express'
-import { ProductMongoManager as ProductManager } from '../dao/ProductMongoManager.js'
-import { CartMongoManager as cartManager } from '../dao/cartMongoManager.js'
 import { isValidObjectId } from 'mongoose';
-export const router = Router()
+import { productService } from '../services/product.service.js';
+import { cartService } from '../services/cart.service.js';
+import passport from 'passport';
 
+export const router = Router()
 
 router.get("/products", async (req, res) => {
     let { page, limit, sort, query } = req.query
@@ -17,7 +18,8 @@ router.get("/products", async (req, res) => {
             sortOpciones = { price: -1 }
         }
 
-        const categoriasExistentes = await ProductManager.getCategories()
+        //
+        const categoriasExistentes = await productService.getCategories()
 
         let filterOpciones = {}
         if (query) {
@@ -30,8 +32,8 @@ router.get("/products", async (req, res) => {
         }
         
         
-        let { docs: products, totalPages, hasNextPage, hasPrevPage, prevPage, nextPage } = await ProductManager.getProductsPag(page, limit, sortOpciones, filterOpciones)
-        let carritos = await cartManager.getCarts()
+        let { docs: products, totalPages, hasNextPage, hasPrevPage, prevPage, nextPage } = await productService.getProductsPag(page, limit, sortOpciones, filterOpciones)
+        let carritos = await cartService.getCarts()
 
         res.render("index", {
             products,
@@ -57,7 +59,7 @@ router.get("/carts/:cid", async (req, res) => {
     }
 
     try {
-        let carrito = await cartManager.getCartsBy({ _id: cid })
+        let carrito = await cartService.getCartsBy({ _id: cid })
         if (!carrito) {
             res.setHeader('Content-Type', 'application/json');
             return res.status(400).json({ error: `No existen Carritos con id: ${cid}` })
@@ -80,8 +82,11 @@ router.get("/carts/:cid", async (req, res) => {
 
 
 
-
+//
 router.get("/realtimeproducts", (req, res) => {
     res.render("realTimeProducts", {})
 })
+
+
+
 

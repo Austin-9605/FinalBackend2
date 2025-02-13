@@ -1,19 +1,20 @@
 import passport from "passport";
 import { Strategy as JWTStrategy, ExtractJwt } from "passport-jwt";
 import { Strategy as LocalStrategy } from "passport-local";
-
-import { createToken, SECRET } from "../utils/jwt.utils.js";
+import { createToken } from "../utils/jwt.utils.js";
 import { userModel } from "../dao/models/user.model.js";
 import { comparePassword } from "../utils/password.utils.js";
+import { CONFIG } from "./config.js";
 
 
 export function initializePassport() {
+    
     //registro
     passport.use("register", new LocalStrategy({
         passReqToCallback: true,
         usernameField: "email"
     }, async (req, email, password, done) => {
-        console.log("SOY LA CONFIG DE PASSPORT")
+        
         try {
             const { firstName, lastName, age, role, cartId } = req.body;
 
@@ -69,13 +70,13 @@ export function initializePassport() {
 
     //current (jwt)
     passport.use("current", new JWTStrategy({
-        secretOrKey: SECRET,
+        secretOrKey: CONFIG.JWT_SECRET,
         jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]),
     }, async (payload, done) => {
         try {
             const user = await userModel.findById(payload.id);
 
-            if (!user) return done(null, false);
+            if (!user) return done(null, false, { message: "Acceso denegado: el usuario no está logueado."});
 
             return done(null, user);
         } catch (error) {
